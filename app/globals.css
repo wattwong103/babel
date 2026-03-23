@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0a0e1a;
+  --surface: #111827;
+  --border: #1e2d45;
+  --science: #3b82f6;
+  --humanities: #a855f7;
+  --learned: #10b981;
+}
+
+body {
+  background-color: var(--bg);
+  color: #f1f5f9;
+  font-family: 'Inter', sans-serif;
+}
+
+/* React Flow overrides */
+.react-flow__renderer {
+  background-color: transparent !important;
+}
+
+.react-flow__minimap {
+  background-color: #111827 !important;
+  border: 1px solid #1e2d45 !important;
+  border-radius: 8px !important;
+}
+
+.react-flow__controls {
+  background-color: #111827 !important;
+  border: 1px solid #1e2d45 !important;
+  border-radius: 8px !important;
+}
+
+.react-flow__controls-button {
+  background-color: #111827 !important;
+  border-color: #1e2d45 !important;
+  fill: #94a3b8 !important;
+}
+
+.react-flow__controls-button:hover {
+  background-color: #1e2d45 !important;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0e1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e2d45;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #374151;
+}
+
+/* Animations */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px var(--glow-color, #3b82f6); }
+  50% { box-shadow: 0 0 20px var(--glow-color, #3b82f6), 0 0 40px color-mix(in srgb, var(--glow-color, #3b82f6) 30%, transparent); }
+}
+
+@keyframes unlock-burst {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 var(--glow-color, #3b82f6); }
+  50% { transform: scale(1.05); box-shadow: 0 0 30px var(--glow-color, #3b82f6); }
+  100% { transform: scale(1); box-shadow: 0 0 8px var(--glow-color, #3b82f6); }
+}
+
+.node-unlocked {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.node-unlock-burst {
+  animation: unlock-burst 0.6s ease-out;
+}
+
+@keyframes edge-flow {
+  from { stroke-dashoffset: 24; }
+  to { stroke-dashoffset: 0; }
+}
+
+.edge-animated {
+  animation: edge-flow 1s linear infinite;
+}
+
+/* Slide-in panel */
+@keyframes slide-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slide-out {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+.panel-enter {
+  animation: slide-in 0.3s ease-out;
+}
+
+.panel-exit {
+  animation: slide-out 0.3s ease-in;
+}
