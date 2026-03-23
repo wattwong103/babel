@@ -83,8 +83,8 @@ export default function KnowledgeTree({
     const flowNodes: Node[] = [];
     const flowEdges: Edge[] = [];
 
-    const TIER_SPACING = 300;
-    const NODE_SPACING = 160;
+    const TIER_SPACING = 350;
+    const NODE_SPACING = 200;
 
     // Create tier label nodes and position knowledge nodes
     tiers.forEach((tier, tierIndex) => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { memo } from "react";
-import { EdgeProps, getBezierPath } from "reactflow";
+import { EdgeProps, getSmoothStepPath } from "reactflow";
 
 function EdgeComponent({
   id,
@@ -13,13 +13,15 @@ function EdgeComponent({
   targetPosition,
   data,
 }: EdgeProps) {
-  const [edgePath] = getBezierPath({
+  const [edgePath] = getSmoothStepPath({
     sourceX,
     sourceY,
     sourcePosition,
     targetX,
     targetY,
     targetPosition,
+    borderRadius: 16,
+    offset: 30,
   });
 
   const isLearned = data?.sourceLearned && data?.targetLearned;
