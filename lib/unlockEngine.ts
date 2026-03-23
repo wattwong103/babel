@@ -1,10 +1,11 @@
-import { KnowledgeNode, NodeStatus } from "@/data";
+import { KnowledgeNode, NodeStatus } from "@/data/types";
 
 /**
  * Recomputes the lock/unlock status of all nodes based on the current learned set.
  * A node is unlocked if ALL its prerequisites are 'learned'.
  * Nodes with no prerequisites start as 'unlocked'.
  * Already-learned nodes stay 'learned'.
+ * Prerequisites can reference nodes from ANY tree (cross-tree support).
  */
 export function computeUnlockStates(
   nodes: Record<string, KnowledgeNode>

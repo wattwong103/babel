@@ -10,15 +10,16 @@ interface KnowledgeStore {
   markAsLearned: (id: string) => void;
   unmarkAsLearned: (id: string) => void;
   updateNotes: (id: string, notes: string) => void;
-  getUnlockedNodes: (domain: string) => KnowledgeNode[];
-  getProgress: (domain: string) => {
+  getTreeNodes: (treeId: string) => KnowledgeNode[];
+  getUnlockedNodes: (treeId: string) => KnowledgeNode[];
+  getProgress: (treeId: string) => {
     learned: number;
     total: number;
     percent: number;
   };
   getTotalProgress: () => { learned: number; total: number; percent: number };
-  getRecentlyLearned: (domain: string, count?: number) => KnowledgeNode[];
-  getNextUp: (domain: string, count?: number) => KnowledgeNode[];
+  getRecentlyLearned: (treeId: string, count?: number) => KnowledgeNode[];
+  getNextUp: (treeId: string, count?: number) => KnowledgeNode[];
 }
 
 export const useKnowledgeStore = create<KnowledgeStore>()(
@@ -71,22 +72,27 @@ export const useKnowledgeStore = create<KnowledgeStore>()(
         });
       },
 
-      getUnlockedNodes: (domain: string) => {
+      getTreeNodes: (treeId: string) => {
+        const { nodes } = get();
+        return Object.values(nodes).filter((n) => n.treeId === treeId);
+      },
+
+      getUnlockedNodes: (treeId: string) => {
         const { nodes } = get();
         return Object.values(nodes).filter(
-          (n) => n.domain === domain && n.status === "unlocked"
+          (n) => n.treeId === treeId && n.status === "unlocked"
         );
       },
 
-      getProgress: (domain: string) => {
+      getProgress: (treeId: string) => {
         const { nodes } = get();
-        const domainNodes = Object.values(nodes).filter(
-          (n) => n.domain === domain
+        const treeNodes = Object.values(nodes).filter(
+          (n) => n.treeId === treeId
         );
-        const learned = domainNodes.filter(
+        const learned = treeNodes.filter(
           (n) => n.status === "learned"
         ).length;
-        const total = domainNodes.length;
+        const total = treeNodes.length;
         return {
           learned,
           total,
@@ -106,11 +112,11 @@ export const useKnowledgeStore = create<KnowledgeStore>()(
         };
       },
 
-      getRecentlyLearned: (domain: string, count = 3) => {
+      getRecentlyLearned: (treeId: string, count = 3) => {
         const { nodes } = get();
         return Object.values(nodes)
           .filter(
-            (n) => n.domain === domain && n.status === "learned" && n.learnedAt
+            (n) => n.treeId === treeId && n.status === "learned" && n.learnedAt
           )
           .sort(
             (a, b) =>
@@ -120,27 +126,25 @@ export const useKnowledgeStore = create<KnowledgeStore>()(
           .slice(0, count);
       },
 
-      getNextUp: (domain: string, count = 2) => {
+      getNextUp: (treeId: string, count = 2) => {
         const { nodes } = get();
         return Object.values(nodes)
-          .filter((n) => n.domain === domain && n.status === "unlocked")
-          .sort((a, b) => a.era - b.era)
+          .filter((n) => n.treeId === treeId && n.status === "unlocked")
+          .sort((a, b) => a.tier - b.tier)
           .slice(0, count);
       },
     }),
     {
-      name: "babel-knowledge-store",
-      // On rehydration, recompute unlock states and merge with seed data
+      name: "babel-knowledge-store-v2",
       merge: (persisted, current) => {
         if (!persisted || typeof persisted !== "object") return current;
         const persistedState = persisted as Partial<KnowledgeStore>;
         const seedNodes = buildInitialNodes();
         const savedNodes = persistedState.nodes || {};
 
-        // Merge: use seed data as base, overlay saved user state (notes, status, learnedAt)
         const merged: Record<string, KnowledgeNode> = {};
         for (const [id, seedNode] of Object.entries(seedNodes)) {
-          const saved = savedNodes[id];
+          const saved = (savedNodes as Record<string, KnowledgeNode>)[id];
           if (saved) {
             merged[id] = {
               ...seedNode,

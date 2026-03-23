@@ -4,23 +4,23 @@ import { memo, useState, useCallback } from "react";
 import { Handle, Position, NodeProps } from "reactflow";
 import { Lock, Check } from "lucide-react";
 import LucideIcon from "@/components/ui/LucideIcon";
-import { KnowledgeNode, ERA_LABELS } from "@/data";
+import { KnowledgeNode, TIER_LABELS } from "@/data/types";
 import { getMissingPrerequisites } from "@/lib/unlockEngine";
 import { useKnowledgeStore } from "@/store/knowledgeStore";
 
 interface KnowledgeNodeData {
   node: KnowledgeNode;
+  accentColor: string;
   onNodeClick: (id: string) => void;
+  sourceColors?: Record<string, string>; // branchId -> color for skill tree badges
 }
 
 function KnowledgeNodeComponent({ data }: NodeProps<KnowledgeNodeData>) {
-  const { node, onNodeClick } = data;
+  const { node, accentColor, onNodeClick, sourceColors } = data;
   const nodes = useKnowledgeStore((s) => s.nodes);
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const isScience = node.domain === "sciences";
-  const accent = isScience ? "#3b82f6" : "#a855f7";
-  const accentLight = isScience ? "#60a5fa" : "#c084fc";
+  const accent = accentColor || "#3b82f6";
 
   const handleClick = useCallback(() => {
     if (node.status !== "locked") {
@@ -30,6 +30,14 @@ function KnowledgeNodeComponent({ data }: NodeProps<KnowledgeNodeData>) {
 
   const missingPrereqs =
     node.status === "locked" ? getMissingPrerequisites(node.id, nodes) : [];
+
+  // Source branch badges for skill tree nodes
+  const badges =
+    node.sourceBranches && sourceColors
+      ? node.sourceBranches
+          .filter((b) => sourceColors[b])
+          .map((b) => ({ id: b, color: sourceColors[b] }))
+      : [];
 
   return (
     <div
@@ -102,7 +110,14 @@ function KnowledgeNodeComponent({ data }: NodeProps<KnowledgeNodeData>) {
           <LucideIcon
             name={node.icon}
             size={24}
-            style={{ color: node.status === "locked" ? "#374151" : accentLight }}
+            style={{
+              color:
+                node.status === "locked"
+                  ? "#374151"
+                  : node.status === "learned"
+                  ? "#10b981"
+                  : accent,
+            }}
           />
         </div>
 
@@ -117,14 +132,26 @@ function KnowledgeNodeComponent({ data }: NodeProps<KnowledgeNodeData>) {
           {node.title}
         </p>
 
-        {/* Era badge */}
+        {/* Tier badge */}
         <div className="mt-2 flex justify-center">
-          <span
-            className="text-[9px] px-1.5 py-0.5 rounded-full bg-babel-border text-babel-text-secondary uppercase tracking-wider"
-          >
-            Era {node.era}
+          <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-babel-border text-babel-text-secondary uppercase tracking-wider">
+            Tier {node.tier}
           </span>
         </div>
+
+        {/* Source branch badges */}
+        {badges.length > 0 && (
+          <div className="mt-1.5 flex justify-center gap-1">
+            {badges.map((badge) => (
+              <div
+                key={badge.id}
+                className="w-2.5 h-2.5 rounded-full border border-babel-bg"
+                style={{ backgroundColor: badge.color }}
+                title={badge.id}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* React Flow handles */}
