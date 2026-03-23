@@ -1,7 +1,7 @@
 "use client";
 
 import { Lock, Sparkles, Check } from "lucide-react";
-import { NodeStatus } from "@/data";
+import { NodeStatus } from "@/data/types";
 
 interface StatusBadgeProps {
   status: NodeStatus;

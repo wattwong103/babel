@@ -4,18 +4,22 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { X, Check, RotateCcw, Lock, ExternalLink } from "lucide-react";
 import LucideIcon from "@/components/ui/LucideIcon";
 import StatusBadge from "@/components/ui/StatusBadge";
-import { KnowledgeNode, ERA_LABELS } from "@/data";
+import { TIER_LABELS } from "@/data/types";
 import { getMissingPrerequisites } from "@/lib/unlockEngine";
 import { useKnowledgeStore } from "@/store/knowledgeStore";
 
 interface NodeDetailPanelProps {
   nodeId: string | null;
   onClose: () => void;
+  accentColor: string;
+  sourceColors?: Record<string, string>;
 }
 
 export default function NodeDetailPanel({
   nodeId,
   onClose,
+  accentColor,
+  sourceColors,
 }: NodeDetailPanelProps) {
   const nodes = useKnowledgeStore((s) => s.nodes);
   const markAsLearned = useKnowledgeStore((s) => s.markAsLearned);
@@ -53,20 +57,35 @@ export default function NodeDetailPanel({
 
   if (!node) return null;
 
-  const isScience = node.domain === "sciences";
-  const accent = isScience ? "text-babel-science-light" : "text-babel-humanities-light";
-  const accentBg = isScience ? "bg-babel-science/10" : "bg-babel-humanities/10";
-  const accentBorder = isScience ? "border-babel-science" : "border-babel-humanities";
-  const accentColor = isScience ? "#3b82f6" : "#a855f7";
   const missingPrereqs = getMissingPrerequisites(node.id, nodes);
+
+  // Cross-tree prerequisites (show which tree they come from)
+  const crossTreePrereqs = node.prerequisites
+    .filter((preId) => {
+      const pre = nodes[preId];
+      return pre && pre.treeId !== node.treeId;
+    })
+    .map((preId) => {
+      const pre = nodes[preId];
+      return {
+        id: preId,
+        title: pre.title,
+        treeId: pre.treeId,
+        status: pre.status,
+      };
+    });
+
+  const badges =
+    node.sourceBranches && sourceColors
+      ? node.sourceBranches
+          .filter((b) => sourceColors[b])
+          .map((b) => ({ id: b, color: sourceColors[b] }))
+      : [];
 
   return (
     <>
       {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/50 z-40"
-        onClick={onClose}
-      />
+      <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose} />
 
       {/* Panel */}
       <div className="fixed top-0 right-0 h-full w-full max-w-md z-50 panel-enter">
@@ -83,7 +102,8 @@ export default function NodeDetailPanel({
             {/* Header */}
             <div className="flex items-start gap-4 mb-6">
               <div
-                className={`p-3 rounded-xl ${accentBg}`}
+                className="p-3 rounded-xl"
+                style={{ backgroundColor: accentColor + "15" }}
               >
                 <LucideIcon
                   name={node.icon}
@@ -98,14 +118,31 @@ export default function NodeDetailPanel({
                 <div className="flex items-center gap-2 flex-wrap">
                   <StatusBadge status={node.status} size="md" />
                   <span className="text-xs px-2 py-1 rounded-full bg-babel-border text-babel-text-secondary">
-                    {ERA_LABELS[node.era]}
-                  </span>
-                  <span
-                    className={`text-xs px-2 py-1 rounded-full ${accentBg} ${accent}`}
-                  >
-                    {node.domain === "sciences" ? "Sciences" : "Humanities"}
+                    {TIER_LABELS[node.tier] || `Tier ${node.tier}`}
                   </span>
                 </div>
+                {/* Source branch badges */}
+                {badges.length > 0 && (
+                  <div className="flex items-center gap-1.5 mt-2">
+                    <span className="text-[10px] text-babel-text-secondary">
+                      From:
+                    </span>
+                    {badges.map((badge) => (
+                      <div
+                        key={badge.id}
+                        className="flex items-center gap-1"
+                      >
+                        <div
+                          className="w-2 h-2 rounded-full"
+                          style={{ backgroundColor: badge.color }}
+                        />
+                        <span className="text-[10px] text-babel-text-secondary capitalize">
+                          {badge.id}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -115,6 +152,41 @@ export default function NodeDetailPanel({
                 {node.description}
               </p>
             </div>
+
+            {/* Cross-tree prerequisites */}
+            {crossTreePrereqs.length > 0 && (
+              <div className="mb-6">
+                <h3 className="font-heading text-lg font-semibold text-babel-text mb-3">
+                  Cross-Tree Prerequisites
+                </h3>
+                <div className="space-y-2">
+                  {crossTreePrereqs.map((pre) => (
+                    <div
+                      key={pre.id}
+                      className="flex items-center gap-2 text-sm p-2 rounded-lg bg-babel-surface border border-babel-border"
+                    >
+                      {pre.status === "learned" ? (
+                        <Check size={14} className="text-emerald-400 flex-shrink-0" />
+                      ) : (
+                        <Lock size={14} className="text-babel-text-secondary flex-shrink-0" />
+                      )}
+                      <span
+                        className={
+                          pre.status === "learned"
+                            ? "text-babel-text"
+                            : "text-babel-text-secondary"
+                        }
+                      >
+                        {pre.title}
+                      </span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-babel-border text-babel-text-secondary ml-auto capitalize">
+                        {pre.treeId}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* What to Learn */}
             <div className="mb-6">
@@ -128,7 +200,11 @@ export default function NodeDetailPanel({
                     className="flex items-start gap-3 text-sm text-babel-text-secondary"
                   >
                     <span
-                      className={`flex-shrink-0 w-5 h-5 rounded-full ${accentBg} ${accent} flex items-center justify-center text-xs font-medium mt-0.5`}
+                      className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-medium mt-0.5"
+                      style={{
+                        backgroundColor: accentColor + "15",
+                        color: accentColor,
+                      }}
                     >
                       {i + 1}
                     </span>
@@ -151,7 +227,8 @@ export default function NodeDetailPanel({
                         href={res.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`${accent} hover:underline flex items-center gap-1`}
+                        className="hover:underline flex items-center gap-1"
+                        style={{ color: accentColor }}
                       >
                         {res.label}
                         <ExternalLink size={12} />
@@ -195,7 +272,7 @@ export default function NodeDetailPanel({
               {node.status === "unlocked" && (
                 <button
                   onClick={() => markAsLearned(node.id)}
-                  className={`w-full py-3 px-4 rounded-lg font-heading font-semibold text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]`}
+                  className="w-full py-3 px-4 rounded-lg font-heading font-semibold text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                   style={{
                     background: `linear-gradient(135deg, ${accentColor}, #10b981)`,
                     boxShadow: `0 0 20px ${accentColor}40`,
@@ -240,7 +317,7 @@ export default function NodeDetailPanel({
                   {missingPrereqs.length > 0 && (
                     <div className="text-xs text-babel-text-secondary">
                       Still needed:{" "}
-                      <span className={accent}>
+                      <span style={{ color: accentColor }}>
                         {missingPrereqs.join(", ")}
                       </span>
                     </div>

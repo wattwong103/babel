@@ -2,39 +2,54 @@
 
 import { useMemo, useState } from "react";
 import { useKnowledgeStore } from "@/store/knowledgeStore";
-import { KnowledgeNode, ERA_LABELS } from "@/data";
+import { KnowledgeNode, TIER_LABELS, SkillTreeSource } from "@/data/types";
 import LucideIcon from "@/components/ui/LucideIcon";
-import StatusBadge from "@/components/ui/StatusBadge";
 import ProgressBar from "@/components/ui/ProgressBar";
 import NodeDetailPanel from "./NodeDetailPanel";
 import { ArrowLeft, Lock, Check, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 interface MobileTreeViewProps {
-  domain: "sciences" | "humanities";
+  treeId: string;
+  title: string;
+  accentColor: string;
+  backHref: string;
+  sources?: SkillTreeSource[];
 }
 
-export default function MobileTreeView({ domain }: MobileTreeViewProps) {
+export default function MobileTreeView({
+  treeId,
+  title,
+  accentColor,
+  backHref,
+  sources,
+}: MobileTreeViewProps) {
   const storeNodes = useKnowledgeStore((s) => s.nodes);
   const getProgress = useKnowledgeStore((s) => s.getProgress);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
 
-  const progress = getProgress(domain);
-  const isScience = domain === "sciences";
-  const accentColor = isScience ? "#3b82f6" : "#a855f7";
-  const progressColor = isScience ? "bg-babel-science" : "bg-babel-humanities";
+  const progress = getProgress(treeId);
 
-  const nodesByEra = useMemo(() => {
-    const domainNodes = Object.values(storeNodes).filter(
-      (n) => n.domain === domain
-    );
-    const byEra: Record<number, KnowledgeNode[]> = {};
-    for (const node of domainNodes) {
-      if (!byEra[node.era]) byEra[node.era] = [];
-      byEra[node.era].push(node);
+  const sourceColors = useMemo(() => {
+    if (!sources) return {};
+    const map: Record<string, string> = {};
+    for (const s of sources) {
+      map[s.branchId] = s.color;
     }
-    return byEra;
-  }, [storeNodes, domain]);
+    return map;
+  }, [sources]);
+
+  const nodesByTier = useMemo(() => {
+    const treeNodes = Object.values(storeNodes).filter(
+      (n) => n.treeId === treeId
+    );
+    const byTier: Record<number, KnowledgeNode[]> = {};
+    for (const node of treeNodes) {
+      if (!byTier[node.tier]) byTier[node.tier] = [];
+      byTier[node.tier].push(node);
+    }
+    return byTier;
+  }, [storeNodes, treeId]);
 
   return (
     <div className="min-h-screen bg-babel-bg">
@@ -42,33 +57,49 @@ export default function MobileTreeView({ domain }: MobileTreeViewProps) {
       <div className="sticky top-0 z-10 bg-babel-bg/90 backdrop-blur-sm border-b border-babel-border px-4 py-3">
         <div className="flex items-center gap-3 mb-2">
           <Link
-            href="/"
+            href={backHref}
             className="p-2 rounded-lg hover:bg-babel-surface text-babel-text-secondary"
           >
             <ArrowLeft size={20} />
           </Link>
           <h1 className="font-heading text-lg font-bold text-babel-text">
-            {domain === "sciences" ? "Sciences" : "Humanities & Philosophy"}
+            {title}
           </h1>
         </div>
         <div className="flex items-center gap-2 ml-10">
           <div className="flex-1">
-            <ProgressBar percent={progress.percent} color={progressColor} />
+            <ProgressBar percent={progress.percent} color="bg-babel-learned" />
           </div>
           <span className="text-xs text-babel-text-secondary whitespace-nowrap">
             {progress.learned}/{progress.total} — {progress.percent}%
           </span>
         </div>
+        {/* Source legend */}
+        {sources && sources.length > 0 && (
+          <div className="flex items-center gap-2 ml-10 mt-2 flex-wrap">
+            {sources.map((s) => (
+              <div key={s.branchId} className="flex items-center gap-1">
+                <div
+                  className="w-2 h-2 rounded-full"
+                  style={{ backgroundColor: s.color }}
+                />
+                <span className="text-[10px] text-babel-text-secondary">
+                  {s.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Nodes by Era */}
+      {/* Nodes by Tier */}
       <div className="px-4 py-6 space-y-8">
-        {Object.entries(nodesByEra)
+        {Object.entries(nodesByTier)
           .sort(([a], [b]) => parseInt(a) - parseInt(b))
-          .map(([era, nodes]) => (
-            <div key={era}>
+          .map(([tier, nodes]) => (
+            <div key={tier}>
               <h2 className="font-heading text-sm font-semibold text-babel-text-secondary uppercase tracking-wider mb-3">
-                {ERA_LABELS[parseInt(era)]}
+                {TIER_LABELS[parseInt(tier)] || `Tier ${tier}`}
               </h2>
               <div className="space-y-2">
                 {nodes.map((node) => (
@@ -115,14 +146,22 @@ export default function MobileTreeView({ domain }: MobileTreeViewProps) {
                       >
                         {node.title}
                       </span>
+                      {/* Source badges */}
+                      {node.sourceBranches &&
+                        node.sourceBranches.map((b) =>
+                          sourceColors[b] ? (
+                            <div
+                              key={b}
+                              className="w-2 h-2 rounded-full"
+                              style={{ backgroundColor: sourceColors[b] }}
+                            />
+                          ) : null
+                        )}
                       {node.status === "locked" && (
                         <Lock size={14} className="text-babel-text-secondary" />
                       )}
                       {node.status === "unlocked" && (
-                        <Sparkles
-                          size={14}
-                          style={{ color: accentColor }}
-                        />
+                        <Sparkles size={14} style={{ color: accentColor }} />
                       )}
                       {node.status === "learned" && (
                         <Check size={14} className="text-emerald-400" />
@@ -140,6 +179,8 @@ export default function MobileTreeView({ domain }: MobileTreeViewProps) {
         <NodeDetailPanel
           nodeId={selectedNode}
           onClose={() => setSelectedNode(null)}
+          accentColor={accentColor}
+          sourceColors={sourceColors}
         />
       )}
     </div>
