@@ -1,0 +1,460 @@
+import { KnowledgeNode } from "./index";
+
+export const humanitiesNodes: KnowledgeNode[] = [
+  // === ERA 1: Ancient ===
+  {
+    id: "presocratic-philosophy",
+    title: "Pre-Socratic Philosophy",
+    domain: "humanities",
+    era: 1,
+    description:
+      "The first Western philosophers who dared to explain the world through reason rather than myth. From Thales' water to Heraclitus' fire.",
+    whatToLearn: [
+      "Thales, Anaximander, and the search for arche",
+      "Heraclitus and the doctrine of flux",
+      "Parmenides and the nature of Being",
+      "Democritus and atomism",
+      "The shift from mythos to logos",
+    ],
+    resources: [
+      { label: "The Presocratic Philosophers — Jonathan Barnes" },
+      { label: "Early Greek Philosophy — Various (Penguin Classics)" },
+    ],
+    prerequisites: [],
+    icon: "Flame",
+    status: "unlocked",
+    userNotes: "",
+  },
+  {
+    id: "mythology-narrative",
+    title: "Mythology & Narrative",
+    domain: "humanities",
+    era: 1,
+    description:
+      "The stories that shaped civilizations. Myths encode profound truths about human nature, morality, and the cosmos.",
+    whatToLearn: [
+      "Greek mythology (Homer, Hesiod)",
+      "The Hero's Journey (Joseph Campbell)",
+      "Creation myths across cultures",
+      "The role of narrative in meaning-making",
+      "Oral tradition and transmission",
+    ],
+    resources: [
+      { label: "The Hero with a Thousand Faces — Joseph Campbell" },
+      { label: "Mythology — Edith Hamilton" },
+      { label: "Homer's Iliad and Odyssey" },
+    ],
+    prerequisites: [],
+    icon: "BookOpen",
+    status: "unlocked",
+    userNotes: "",
+  },
+  {
+    id: "rhetoric",
+    title: "Rhetoric & Persuasion",
+    domain: "humanities",
+    era: 1,
+    description:
+      "The art of effective communication and argumentation. Rhetoric is the tool of democracy, law, and leadership.",
+    whatToLearn: [
+      "Ethos, pathos, and logos",
+      "Aristotle's Rhetoric",
+      "Sophists and their methods",
+      "Logical fallacies in argument",
+      "Persuasion in democratic contexts",
+    ],
+    resources: [
+      { label: "Rhetoric — Aristotle" },
+      { label: "Thank You for Arguing — Jay Heinrichs" },
+    ],
+    prerequisites: [],
+    icon: "MessageSquare",
+    status: "unlocked",
+    userNotes: "",
+  },
+
+  // === ERA 2: Classical ===
+  {
+    id: "platonic-philosophy",
+    title: "Platonic Philosophy",
+    domain: "humanities",
+    era: 2,
+    description:
+      "Plato's vision of reality: a world of eternal Forms beyond the senses. His dialogues remain the foundation of Western philosophy.",
+    whatToLearn: [
+      "Theory of Forms / Ideas",
+      "The Allegory of the Cave",
+      "Plato's Republic and the ideal state",
+      "The Socratic method",
+      "The soul and its tripartite division",
+    ],
+    resources: [
+      { label: "The Republic — Plato" },
+      { label: "Phaedo — Plato" },
+      { label: "Plato at the Googleplex — Rebecca Goldstein" },
+    ],
+    prerequisites: ["presocratic-philosophy", "rhetoric"],
+    icon: "Eye",
+    status: "locked",
+    userNotes: "",
+  },
+  {
+    id: "aristotelian-logic",
+    title: "Aristotelian Logic",
+    domain: "humanities",
+    era: 2,
+    description:
+      "Aristotle systematized logic and created the first comprehensive framework for valid reasoning that dominated for two millennia.",
+    whatToLearn: [
+      "Categories and the Organon",
+      "Syllogistic reasoning",
+      "The four causes (material, formal, efficient, final)",
+      "Substance and accident",
+      "Aristotle's Metaphysics (introduction)",
+    ],
+    resources: [
+      { label: "Nicomachean Ethics — Aristotle" },
+      { label: "Aristotle's Way — Edith Hall" },
+    ],
+    prerequisites: ["presocratic-philosophy"],
+    icon: "Scale",
+    status: "locked",
+    userNotes: "",
+  },
+  {
+    id: "ethics-foundations",
+    title: "Ethics Foundations",
+    domain: "humanities",
+    era: 2,
+    description:
+      "What is the good life? Ancient ethics explores virtue, happiness, and moral character as the basis of ethical living.",
+    whatToLearn: [
+      "Virtue ethics (Aristotle)",
+      "Eudaimonia and human flourishing",
+      "The Golden Mean",
+      "Socratic ethics: knowledge as virtue",
+      "The role of habit in moral development",
+    ],
+    resources: [
+      { label: "Nicomachean Ethics — Aristotle" },
+      { label: "Ethics: A Very Short Introduction — Simon Blackburn" },
+    ],
+    prerequisites: ["platonic-philosophy", "aristotelian-logic"],
+    icon: "Heart",
+    status: "locked",
+    userNotes: "",
+  },
+
+  // === ERA 3: Medieval ===
+  {
+    id: "stoicism-epicureanism",
+    title: "Stoicism & Epicureanism",
+    domain: "humanities",
+    era: 3,
+    description:
+      "Two rival schools of thought on how to live well. The Stoics counsel mastery over emotion; the Epicureans pursue measured pleasure.",
+    whatToLearn: [
+      "Stoic philosophy (Zeno, Epictetus, Marcus Aurelius)",
+      "The dichotomy of control",
+      "Epicurean ethics and the pleasure principle",
+      "Lucretius' On the Nature of Things",
+      "Comparing Stoic and Epicurean worldviews",
+    ],
+    resources: [
+      { label: "Meditations — Marcus Aurelius" },
+      { label: "Letters from a Stoic — Seneca" },
+      { label: "The Swerve — Stephen Greenblatt" },
+    ],
+    prerequisites: ["ethics-foundations"],
+    icon: "Shield",
+    status: "locked",
+    userNotes: "",
+  },
+  {
+    id: "political-philosophy-antiquity",
+    title: "Political Philosophy (Antiquity)",
+    domain: "humanities",
+    era: 3,
+    description:
+      "The first systematic thinking about justice, the state, and governance. From Plato's Republic to Roman law.",
+    whatToLearn: [
+      "Plato's ideal state and philosopher-kings",
+      "Aristotle's Politics and constitutional theory",
+      "Roman Republic and civic virtue",
+      "Natural law theory (Cicero)",
+      "Democracy vs. oligarchy vs. tyranny",
+    ],
+    resources: [
+      { label: "Politics — Aristotle" },
+      { label: "The Republic — Plato" },
+      { label: "On the Republic — Cicero" },
+    ],
+    prerequisites: ["platonic-philosophy", "ethics-foundations"],
+    icon: "Landmark",
+    status: "locked",
+    userNotes: "",
+  },
+  {
+    id: "aesthetics-basics",
+    title: "Aesthetics Basics",
+    domain: "humanities",
+    era: 3,
+    description:
+      "The philosophy of beauty, art, and taste. What makes something beautiful? Is beauty objective or subjective?",
+    whatToLearn: [
+      "Plato on art and mimesis",
+      "Aristotle's Poetics and catharsis",
+      "Beauty as form and proportion",
+      "The sublime (Longinus)",
+      "Art as representation vs. expression",
+    ],
+    resources: [
+      { label: "Poetics — Aristotle" },
+      { label: "Aesthetics: A Very Short Introduction — Bence Nanay" },
+    ],
+    prerequisites: ["platonic-philosophy", "mythology-narrative"],
+    icon: "Palette",
+    status: "locked",
+    userNotes: "",
+  },
+
+  // === ERA 4: Renaissance ===
+  {
+    id: "medieval-scholasticism",
+    title: "Medieval Scholasticism",
+    domain: "humanities",
+    era: 4,
+    description:
+      "The synthesis of faith and reason in medieval Europe. Scholastics like Aquinas built grand philosophical systems merging Aristotle with theology.",
+    whatToLearn: [
+      "Aquinas' Five Ways (proofs of God)",
+      "Faith and reason: compatibility?",
+      "Universals debate (realism vs. nominalism)",
+      "Ockham's Razor",
+      "The university system and disputation",
+    ],
+    resources: [
+      { label: "Summa Theologiae — Thomas Aquinas (selections)" },
+      { label: "Medieval Philosophy: A Very Short Introduction — John Marenbon" },
+    ],
+    prerequisites: ["aristotelian-logic", "stoicism-epicureanism"],
+    icon: "Church",
+    status: "locked",
+    userNotes: "",
+  },
+  {
+    id: "epistemology",
+    title: "Epistemology",
+    domain: "humanities",
+    era: 4,
+    description:
+      "The study of knowledge itself. What can we know? How do we know it? What justifies our beliefs?",
+    whatToLearn: [
+      "Descartes' methodological doubt ('I think, therefore I am')",
+      "Rationalism vs. empiricism",
+      "The problem of induction (Hume)",
+      "Justified true belief and Gettier problems",
+      "Skepticism and its responses",
+    ],
+    resources: [
+      { label: "Meditations on First Philosophy — René Descartes" },
+      { label: "An Enquiry Concerning Human Understanding — David Hume" },
+    ],
+    prerequisites: ["aristotelian-logic", "medieval-scholasticism"],
+    icon: "Search",
+    status: "locked",
+    userNotes: "",
+  },
+  {
+    id: "philosophy-of-mind",
+    title: "Philosophy of Mind",
+    domain: "humanities",
+    era: 4,
+    description:
+      "What is the mind? How does it relate to the body? Philosophy of mind explores consciousness, intentionality, and mental states.",
+    whatToLearn: [
+      "Mind-body dualism (Descartes)",
+      "Materialism and physicalism",
+      "The problem of other minds",
+      "Intentionality and mental representation",
+      "Qualia and the hard problem of consciousness",
+    ],
+    resources: [
+      { label: "Philosophy of Mind: A Contemporary Introduction — John Heil" },
+      { label: "The Conscious Mind — David Chalmers" },
+    ],
+    prerequisites: ["epistemology"],
+    icon: "BrainCircuit",
+    status: "locked",
+    userNotes: "",
+  },
+
+  // === ERA 5: Modern ===
+  {
+    id: "enlightenment-philosophy",
+    title: "Enlightenment Philosophy",
+    domain: "humanities",
+    era: 5,
+    description:
+      "The Age of Reason. Enlightenment thinkers championed individual rights, scientific progress, and the power of human reason.",
+    whatToLearn: [
+      "Kant's Critique of Pure Reason (core ideas)",
+      "The social contract (Locke, Rousseau, Hobbes)",
+      "Kant's moral philosophy (categorical imperative)",
+      "Liberty and rights (John Stuart Mill)",
+      "The Enlightenment's legacy in modern democracy",
+    ],
+    resources: [
+      { label: "Critique of Pure Reason — Immanuel Kant (abridged)" },
+      { label: "Two Treatises of Government — John Locke" },
+      { label: "On Liberty — John Stuart Mill" },
+    ],
+    prerequisites: ["epistemology", "political-philosophy-antiquity"],
+    icon: "Lightbulb",
+    status: "locked",
+    userNotes: "",
+  },
+  {
+    id: "existentialism",
+    title: "Existentialism",
+    domain: "humanities",
+    era: 5,
+    description:
+      "Existence precedes essence. Existentialists confront the absurdity of life, radical freedom, and the responsibility of self-creation.",
+    whatToLearn: [
+      "Kierkegaard and the leap of faith",
+      "Nietzsche: God is dead, the Übermensch",
+      "Sartre: radical freedom and bad faith",
+      "Camus and the absurd",
+      "Heidegger's Being and Time (introduction)",
+    ],
+    resources: [
+      { label: "Being and Nothingness — Jean-Paul Sartre" },
+      { label: "The Myth of Sisyphus — Albert Camus" },
+      { label: "Existentialism Is a Humanism — Jean-Paul Sartre" },
+    ],
+    prerequisites: ["enlightenment-philosophy"],
+    icon: "User",
+    status: "locked",
+    userNotes: "",
+  },
+  {
+    id: "ethics-modern",
+    title: "Ethics (Modern)",
+    domain: "humanities",
+    era: 5,
+    description:
+      "Modern ethical frameworks: utilitarianism, deontology, and social contract theory. How should we act in a complex world?",
+    whatToLearn: [
+      "Utilitarianism (Bentham, Mill)",
+      "Deontological ethics (Kant)",
+      "Rawls' Theory of Justice",
+      "The trolley problem and moral dilemmas",
+      "Rights-based ethics vs. consequentialism",
+    ],
+    resources: [
+      { label: "Utilitarianism — John Stuart Mill" },
+      { label: "A Theory of Justice — John Rawls" },
+      { label: "Practical Ethics — Peter Singer" },
+    ],
+    prerequisites: ["enlightenment-philosophy", "stoicism-epicureanism"],
+    icon: "Scale",
+    status: "locked",
+    userNotes: "",
+  },
+
+  // === ERA 6: Contemporary ===
+  {
+    id: "phenomenology",
+    title: "Phenomenology",
+    domain: "humanities",
+    era: 6,
+    description:
+      "The study of structures of experience and consciousness. Phenomenology returns to 'the things themselves' as they appear to us.",
+    whatToLearn: [
+      "Husserl's phenomenological method",
+      "Intentionality and consciousness",
+      "Heidegger's existential phenomenology",
+      "Merleau-Ponty and embodiment",
+      "Phenomenology's influence on psychology",
+    ],
+    resources: [
+      { label: "Phenomenology of Perception — Maurice Merleau-Ponty" },
+      { label: "Introduction to Phenomenology — Robert Sokolowski" },
+    ],
+    prerequisites: ["existentialism", "philosophy-of-mind"],
+    icon: "Eye",
+    status: "locked",
+    userNotes: "",
+  },
+  {
+    id: "philosophy-of-science",
+    title: "Philosophy of Science",
+    domain: "humanities",
+    era: 6,
+    description:
+      "What makes science science? Examining the logic, methods, and assumptions underlying scientific inquiry.",
+    whatToLearn: [
+      "Popper's falsificationism",
+      "Kuhn's paradigm shifts",
+      "The demarcation problem",
+      "Scientific realism vs. anti-realism",
+      "Lakatos and research programmes",
+    ],
+    resources: [
+      { label: "The Structure of Scientific Revolutions — Thomas Kuhn" },
+      { label: "The Logic of Scientific Discovery — Karl Popper" },
+    ],
+    prerequisites: ["epistemology", "enlightenment-philosophy"],
+    icon: "FlaskConical",
+    status: "locked",
+    userNotes: "",
+  },
+  {
+    id: "contemporary-ethics",
+    title: "Contemporary Ethics",
+    domain: "humanities",
+    era: 6,
+    description:
+      "Ethics for the 21st century: bioethics, environmental ethics, AI ethics, and the moral challenges of a globalized, technological world.",
+    whatToLearn: [
+      "Bioethics and medical ethics",
+      "Environmental ethics and animal rights",
+      "AI ethics and algorithmic fairness",
+      "Global justice and human rights",
+      "Virtue ethics revival (MacIntyre, Foot)",
+    ],
+    resources: [
+      { label: "After Virtue — Alasdair MacIntyre" },
+      { label: "Animal Liberation — Peter Singer" },
+      { label: "Ethics in the Real World — Peter Singer" },
+    ],
+    prerequisites: ["ethics-modern", "philosophy-of-science"],
+    icon: "Globe",
+    status: "locked",
+    userNotes: "",
+  },
+  {
+    id: "semiotics",
+    title: "Semiotics",
+    domain: "humanities",
+    era: 6,
+    description:
+      "The study of signs and meaning. Semiotics reveals how symbols, language, and culture construct our understanding of reality.",
+    whatToLearn: [
+      "Saussure's structural linguistics",
+      "Peirce's sign theory (icon, index, symbol)",
+      "Barthes and cultural semiotics",
+      "Structuralism and post-structuralism",
+      "Derrida and deconstruction (introduction)",
+    ],
+    resources: [
+      { label: "Mythologies — Roland Barthes" },
+      { label: "Course in General Linguistics — Ferdinand de Saussure" },
+    ],
+    prerequisites: ["aesthetics-basics", "phenomenology"],
+    icon: "Languages",
+    status: "locked",
+    userNotes: "",
+  },
+];
