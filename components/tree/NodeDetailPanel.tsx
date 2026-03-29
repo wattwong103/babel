@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { X, Check, RotateCcw, Lock, ExternalLink } from "lucide-react";
+import { X, Check, RotateCcw, Lock, ExternalLink, Briefcase, Clock } from "lucide-react";
 import LucideIcon from "@/components/ui/LucideIcon";
 import StatusBadge from "@/components/ui/StatusBadge";
-import { TIER_LABELS } from "@/data/types";
+import ProjectStepChecklist from "./ProjectStepChecklist";
+import DeliverableCard from "./DeliverableCard";
+import { TIER_LABELS, PROJECT_TIER_LABELS } from "@/data/types";
 import { getMissingPrerequisites } from "@/lib/unlockEngine";
 import { useKnowledgeStore } from "@/store/knowledgeStore";
 
@@ -25,6 +27,8 @@ export default function NodeDetailPanel({
   const markAsLearned = useKnowledgeStore((s) => s.markAsLearned);
   const unmarkAsLearned = useKnowledgeStore((s) => s.unmarkAsLearned);
   const updateNotes = useKnowledgeStore((s) => s.updateNotes);
+  const toggleProjectStep = useKnowledgeStore((s) => s.toggleProjectStep);
+  const toggleDeliverable = useKnowledgeStore((s) => s.toggleDeliverable);
 
   const [localNotes, setLocalNotes] = useState("");
   const [saved, setSaved] = useState(false);
@@ -75,6 +79,22 @@ export default function NodeDetailPanel({
       };
     });
 
+  const isProject = node.nodeType === "project";
+  const tierLabel = isProject
+    ? PROJECT_TIER_LABELS[node.tier] || `Phase ${node.tier}`
+    : TIER_LABELS[node.tier] || `Tier ${node.tier}`;
+  const allDeliverablesComplete =
+    isProject && node.deliverables
+      ? node.deliverables.every((d) => d.completed)
+      : true;
+  const deliverableProgress =
+    isProject && node.deliverables
+      ? {
+          done: node.deliverables.filter((d) => d.completed).length,
+          total: node.deliverables.length,
+        }
+      : null;
+
   const badges =
     node.sourceBranches && sourceColors
       ? node.sourceBranches
@@ -118,8 +138,13 @@ export default function NodeDetailPanel({
                 <div className="flex items-center gap-2 flex-wrap">
                   <StatusBadge status={node.status} size="md" />
                   <span className="text-xs px-2 py-1 rounded-full bg-babel-border text-babel-text-secondary">
-                    {TIER_LABELS[node.tier] || `Tier ${node.tier}`}
+                    {tierLabel}
                   </span>
+                  {isProject && node.estimatedHours && (
+                    <span className="text-xs px-2 py-1 rounded-full bg-babel-border text-babel-text-secondary flex items-center gap-1">
+                      <Clock size={10} />~{node.estimatedHours}h
+                    </span>
+                  )}
                 </div>
                 {/* Source branch badges */}
                 {badges.length > 0 && (
@@ -152,6 +177,30 @@ export default function NodeDetailPanel({
                 {node.description}
               </p>
             </div>
+
+            {/* Scenario Context (project nodes only) */}
+            {isProject && node.scenarioContext && (
+              <div
+                className="mb-6 p-4 rounded-lg border"
+                style={{
+                  borderColor: accentColor + "30",
+                  backgroundColor: accentColor + "08",
+                }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <Briefcase size={14} style={{ color: accentColor }} />
+                  <span
+                    className="text-xs font-semibold uppercase tracking-wider"
+                    style={{ color: accentColor }}
+                  >
+                    Your Mission
+                  </span>
+                </div>
+                <p className="text-sm text-babel-text-secondary leading-relaxed">
+                  {node.scenarioContext}
+                </p>
+              </div>
+            )}
 
             {/* Cross-tree prerequisites */}
             {crossTreePrereqs.length > 0 && (
@@ -214,6 +263,53 @@ export default function NodeDetailPanel({
               </ol>
             </div>
 
+            {/* Project Steps (project nodes only) */}
+            {isProject && node.projectSteps && node.projectSteps.length > 0 && (
+              <div className="mb-6">
+                <ProjectStepChecklist
+                  steps={node.projectSteps}
+                  accentColor={accentColor}
+                  onToggle={(stepId) => toggleProjectStep(node.id, stepId)}
+                />
+              </div>
+            )}
+
+            {/* Deliverables (project nodes only) */}
+            {isProject && node.deliverables && node.deliverables.length > 0 && (
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-heading text-lg font-semibold text-babel-text">
+                    Deliverables
+                  </h3>
+                  {deliverableProgress && (
+                    <span
+                      className="text-xs font-medium px-2 py-1 rounded-full"
+                      style={{
+                        backgroundColor: allDeliverablesComplete
+                          ? "#10b98115"
+                          : accentColor + "15",
+                        color: allDeliverablesComplete
+                          ? "#10b981"
+                          : accentColor,
+                      }}
+                    >
+                      {deliverableProgress.done}/{deliverableProgress.total}
+                    </span>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  {node.deliverables.map((d) => (
+                    <DeliverableCard
+                      key={d.id}
+                      deliverable={d}
+                      accentColor={accentColor}
+                      onToggle={() => toggleDeliverable(node.id, d.id)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Resources */}
             <div className="mb-6">
               <h3 className="font-heading text-lg font-semibold text-babel-text mb-3">
@@ -270,19 +366,38 @@ export default function NodeDetailPanel({
               }`}
             >
               {node.status === "unlocked" && (
-                <button
-                  onClick={() => markAsLearned(node.id)}
-                  className="w-full py-3 px-4 rounded-lg font-heading font-semibold text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-                  style={{
-                    background: `linear-gradient(135deg, ${accentColor}, #10b981)`,
-                    boxShadow: `0 0 20px ${accentColor}40`,
-                  }}
-                >
-                  <span className="flex items-center justify-center gap-2">
-                    <Check size={18} />
-                    Mark as Learned
-                  </span>
-                </button>
+                isProject && !allDeliverablesComplete ? (
+                  <div className="text-center space-y-2">
+                    <button
+                      disabled
+                      className="w-full py-3 px-4 rounded-lg font-heading font-semibold text-babel-text-secondary bg-babel-surface border border-babel-border cursor-not-allowed opacity-60"
+                    >
+                      <span className="flex items-center justify-center gap-2">
+                        <Check size={18} />
+                        Complete All Deliverables to Finish
+                      </span>
+                    </button>
+                    {deliverableProgress && (
+                      <p className="text-xs text-babel-text-secondary">
+                        {deliverableProgress.done}/{deliverableProgress.total} deliverables completed
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => markAsLearned(node.id)}
+                    className="w-full py-3 px-4 rounded-lg font-heading font-semibold text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                    style={{
+                      background: `linear-gradient(135deg, ${accentColor}, #10b981)`,
+                      boxShadow: `0 0 20px ${accentColor}40`,
+                    }}
+                  >
+                    <span className="flex items-center justify-center gap-2">
+                      <Check size={18} />
+                      {isProject ? "Complete This Phase" : "Mark as Learned"}
+                    </span>
+                  </button>
+                )
               )}
 
               {node.status === "learned" && (

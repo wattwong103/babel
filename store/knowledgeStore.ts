@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { KnowledgeNode, buildInitialNodes } from "@/data";
+import type { ProjectStep, Deliverable } from "@/data/types";
 import { computeUnlockStates } from "@/lib/unlockEngine";
 
 interface KnowledgeStore {
@@ -10,6 +11,8 @@ interface KnowledgeStore {
   markAsLearned: (id: string) => void;
   unmarkAsLearned: (id: string) => void;
   updateNotes: (id: string, notes: string) => void;
+  toggleProjectStep: (nodeId: string, stepId: string) => void;
+  toggleDeliverable: (nodeId: string, deliverableId: string) => void;
   getTreeNodes: (treeId: string) => KnowledgeNode[];
   getUnlockedNodes: (treeId: string) => KnowledgeNode[];
   getProgress: (treeId: string) => {
@@ -67,6 +70,44 @@ export const useKnowledgeStore = create<KnowledgeStore>()(
             nodes: {
               ...state.nodes,
               [id]: { ...node, userNotes: notes },
+            },
+          };
+        });
+      },
+
+      toggleProjectStep: (nodeId: string, stepId: string) => {
+        set((state) => {
+          const node = state.nodes[nodeId];
+          if (!node?.projectSteps) return state;
+          return {
+            nodes: {
+              ...state.nodes,
+              [nodeId]: {
+                ...node,
+                projectSteps: node.projectSteps.map((s) =>
+                  s.id === stepId ? { ...s, completed: !s.completed } : s
+                ),
+              },
+            },
+          };
+        });
+      },
+
+      toggleDeliverable: (nodeId: string, deliverableId: string) => {
+        set((state) => {
+          const node = state.nodes[nodeId];
+          if (!node?.deliverables) return state;
+          return {
+            nodes: {
+              ...state.nodes,
+              [nodeId]: {
+                ...node,
+                deliverables: node.deliverables.map((d) =>
+                  d.id === deliverableId
+                    ? { ...d, completed: !d.completed }
+                    : d
+                ),
+              },
             },
           };
         });
@@ -135,7 +176,7 @@ export const useKnowledgeStore = create<KnowledgeStore>()(
       },
     }),
     {
-      name: "babel-knowledge-store-v2",
+      name: "babel-knowledge-store-v3",
       merge: (persisted, current) => {
         if (!persisted || typeof persisted !== "object") return current;
         const persistedState = persisted as Partial<KnowledgeStore>;
@@ -151,6 +192,21 @@ export const useKnowledgeStore = create<KnowledgeStore>()(
               status: saved.status,
               userNotes: saved.userNotes || "",
               learnedAt: saved.learnedAt,
+              // Preserve project step/deliverable completion state
+              projectSteps: seedNode.projectSteps?.map((step) => ({
+                ...step,
+                completed:
+                  (saved.projectSteps as ProjectStep[] | undefined)?.find(
+                    (s) => s.id === step.id
+                  )?.completed ?? step.completed,
+              })),
+              deliverables: seedNode.deliverables?.map((d) => ({
+                ...d,
+                completed:
+                  (saved.deliverables as Deliverable[] | undefined)?.find(
+                    (sd) => sd.id === d.id
+                  )?.completed ?? d.completed,
+              })),
             };
           } else {
             merged[id] = seedNode;

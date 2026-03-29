@@ -1,5 +1,19 @@
 export type NodeStatus = "locked" | "unlocked" | "learned";
 export type TreeTier = "grand" | "branch" | "skill";
+export type NodeType = "knowledge" | "project";
+
+export interface ProjectStep {
+  id: string;
+  label: string;
+  completed: boolean;
+}
+
+export interface Deliverable {
+  id: string;
+  label: string;
+  description: string;
+  completed: boolean;
+}
 
 export interface GrandTree {
   id: string;
@@ -51,6 +65,12 @@ export interface KnowledgeNode {
   userNotes: string;
   learnedAt?: string;
   sourceBranches?: string[];
+  // Project-based learning fields
+  nodeType?: NodeType;
+  projectSteps?: ProjectStep[];
+  deliverables?: Deliverable[];
+  estimatedHours?: number;
+  scenarioContext?: string;
 }
 
 export const TIER_LABELS: Record<number, string> = {
@@ -59,4 +79,11 @@ export const TIER_LABELS: Record<number, string> = {
   3: "Analysis & Methods",
   4: "Advanced Topics",
   5: "Frontier",
+};
+
+export const PROJECT_TIER_LABELS: Record<number, string> = {
+  1: "Project Setup",
+  2: "Core Modeling",
+  3: "Integration & Validation",
+  4: "Analysis & Reporting",
 };

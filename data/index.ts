@@ -37,8 +37,9 @@ export const branchTrees = [
 
 // Skill trees
 import { transportationSciences } from "./skills/transportation-sciences";
+import { fourStepModelProject } from "./skills/four-step-model-project";
 
-export const skillTrees = [transportationSciences];
+export const skillTrees = [transportationSciences, fourStepModelProject];
 
 // Lookup helpers
 import type { KnowledgeNode, BranchTree, SkillTree, GrandTree } from "./types";

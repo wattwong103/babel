@@ -2,9 +2,9 @@
 
 import { memo, useState, useCallback } from "react";
 import { Handle, Position, NodeProps } from "reactflow";
-import { Lock, Check } from "lucide-react";
+import { Lock, Check, Hammer } from "lucide-react";
 import LucideIcon from "@/components/ui/LucideIcon";
-import { KnowledgeNode, TIER_LABELS } from "@/data/types";
+import { KnowledgeNode, TIER_LABELS, PROJECT_TIER_LABELS } from "@/data/types";
 import { getMissingPrerequisites } from "@/lib/unlockEngine";
 import { useKnowledgeStore } from "@/store/knowledgeStore";
 
@@ -91,6 +91,18 @@ function KnowledgeNodeComponent({ data }: NodeProps<KnowledgeNodeData>) {
           } as React.CSSProperties
         }
       >
+        {/* Project badge */}
+        {node.nodeType === "project" && node.status !== "locked" && (
+          <div className="absolute top-1 left-1">
+            <div
+              className="w-4 h-4 rounded flex items-center justify-center"
+              style={{ backgroundColor: accent + "20" }}
+            >
+              <Hammer size={9} style={{ color: accent }} />
+            </div>
+          </div>
+        )}
+
         {/* Status overlay */}
         {node.status === "locked" && (
           <div className="absolute top-1 right-1">
@@ -135,9 +147,32 @@ function KnowledgeNodeComponent({ data }: NodeProps<KnowledgeNodeData>) {
         {/* Tier badge */}
         <div className="mt-2 flex justify-center">
           <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-babel-border text-babel-text-secondary uppercase tracking-wider">
-            Tier {node.tier}
+            {node.nodeType === "project"
+              ? PROJECT_TIER_LABELS[node.tier] || `Phase ${node.tier}`
+              : `Tier ${node.tier}`}
           </span>
         </div>
+
+        {/* Deliverable progress (project nodes only) */}
+        {node.nodeType === "project" &&
+          node.deliverables &&
+          node.status !== "locked" && (() => {
+            const done = node.deliverables.filter((d) => d.completed).length;
+            const total = node.deliverables.length;
+            return (
+              <div className="mt-1.5 px-2">
+                <div className="h-1 bg-babel-border rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{
+                      width: `${(done / total) * 100}%`,
+                      backgroundColor: done === total ? "#10b981" : accent,
+                    }}
+                  />
+                </div>
+              </div>
+            );
+          })()}
 
         {/* Source branch badges */}
         {badges.length > 0 && (
