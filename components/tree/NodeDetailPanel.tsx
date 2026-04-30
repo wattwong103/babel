@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { X, Check, RotateCcw, Lock, ExternalLink, Briefcase, Clock } from "lucide-react";
+import { X, Check, RotateCcw, Lock, ExternalLink, Briefcase, Clock, Lightbulb } from "lucide-react";
 import LucideIcon from "@/components/ui/LucideIcon";
 import StatusBadge from "@/components/ui/StatusBadge";
 import ProjectStepChecklist from "./ProjectStepChecklist";
@@ -262,6 +262,29 @@ export default function NodeDetailPanel({
                 ))}
               </ol>
             </div>
+
+            {/* Tips */}
+            {node.tips && node.tips.length > 0 && (
+              <div
+                className="mb-6 p-4 rounded-lg border"
+                style={{ borderColor: "#facc1530", backgroundColor: "#facc1508" }}
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <Lightbulb size={14} className="text-yellow-400" />
+                  <span className="text-xs font-semibold uppercase tracking-wider text-yellow-400">
+                    Useful Tips
+                  </span>
+                </div>
+                <ul className="space-y-2">
+                  {node.tips.map((tip, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-babel-text-secondary leading-relaxed">
+                      <span className="text-yellow-400 mt-1 flex-shrink-0">•</span>
+                      <span>{tip}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* Project Steps (project nodes only) */}
             {isProject && node.projectSteps && node.projectSteps.length > 0 && (

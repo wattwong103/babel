@@ -65,6 +65,7 @@ export interface KnowledgeNode {
   userNotes: string;
   learnedAt?: string;
   sourceBranches?: string[];
+  tips?: string[];
   // Project-based learning fields
   nodeType?: NodeType;
   projectSteps?: ProjectStep[];
