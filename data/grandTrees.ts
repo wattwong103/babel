@@ -17,7 +17,7 @@ export const grandTrees: GrandTree[] = [
       "Understanding the physical world — from subatomic particles to ecosystems. Physics, chemistry, biology, and earth sciences reveal the laws of nature.",
     icon: "atom",
     color: "#10b981",
-    branches: ["biology"],
+    branches: ["biology", "earth-science"],
   },
   {
     id: "social-sciences",
@@ -54,6 +54,6 @@ export const grandTrees: GrandTree[] = [
     icon: "network",
     color: "#06b6d4",
     branches: [],
-    skillTrees: ["transportation-sciences", "four-step-model-project"],
+    skillTrees: ["transportation-sciences", "four-step-model-project", "igeo-mastery"],
   },
 ];

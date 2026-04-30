@@ -23,6 +23,7 @@ import { economics } from "./branches/economics";
 import { politicalScience } from "./branches/political-science";
 import { psychology } from "./branches/psychology";
 import { philosophy } from "./branches/philosophy";
+import { earthScience } from "./branches/earth-science";
 
 export const branchTrees = [
   mathematics,
@@ -33,13 +34,15 @@ export const branchTrees = [
   politicalScience,
   psychology,
   philosophy,
+  earthScience,
 ];
 
 // Skill trees
 import { transportationSciences } from "./skills/transportation-sciences";
 import { fourStepModelProject } from "./skills/four-step-model-project";
+import { igeoMastery } from "./skills/igeo-mastery";
 
-export const skillTrees = [transportationSciences, fourStepModelProject];
+export const skillTrees = [transportationSciences, fourStepModelProject, igeoMastery];
 
 // Lookup helpers
 import type { KnowledgeNode, BranchTree, SkillTree, GrandTree } from "./types";
