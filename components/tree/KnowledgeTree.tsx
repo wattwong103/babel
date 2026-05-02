@@ -226,7 +226,7 @@ export default function KnowledgeTree({
         maxZoom={1.5}
         nodesDraggable={false}
         nodesConnectable={false}
-        elementsSelectable={false}
+        elementsSelectable={true}
         panOnDrag
         zoomOnScroll
         zoomOnPinch
