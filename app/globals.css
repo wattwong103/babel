@@ -1,80 +1,164 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+/* Wongkaew Research — fonts (Google Fonts CDN). @import must come first. */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* =============================================================
+   Wongkaew Research — Design tokens.
+   Babel ships in the brand's preferred DARK mode: deep-navy
+   surfaces, brighter blue accent, blue-tinted text. Style with
+   the semantic aliases so the look stays on-brand as tokens evolve.
+   ============================================================= */
 :root {
-  --bg: #0a0e1a;
-  --surface: #111827;
-  --border: #1e2d45;
-  --science: #3b82f6;
-  --humanities: #a855f7;
-  --learned: #10b981;
+  /* ---- Brand blues (base scale) ---- */
+  --navy-900: #081a33;
+  --navy-800: #0c2747;
+  --navy-700: #123862; /* PRIMARY brand color */
+  --navy-600: #1a4c82;
+  --blue-500: #2563a8; /* interactive / accent */
+  --blue-400: #3e7cc0;
+  --blue-300: #6fa3d6;
+  --blue-200: #aecbe8;
+  --coral-500: #e0533d; /* highlight: awards only */
+
+  /* ---- Dark-navy surface ramp ---- */
+  --navy-canvas: #06182e;
+  --navy-surface: #0e2742;
+  --navy-surface-2: #143257;
+  --navy-line: #1f3f63;
+  --accent-bright: #4f8dd6;
+
+  /* ---- Semantic surfaces ---- */
+  --surface-page: var(--navy-canvas);
+  --surface-card: var(--navy-surface);
+  --surface-raised: var(--navy-surface-2);
+  --surface-sunken: #0a1f38;
+  --surface-tint: #122f50;
+
+  /* ---- Text ---- */
+  --text-strong: #eef4fb;
+  --text-body: #c3d2e4;
+  --text-muted: #8fa3bc;
+  --text-faint: #647890;
+
+  /* ---- Brand / interactive ---- */
+  --brand: var(--blue-500);
+  --accent: var(--accent-bright);
+  --accent-hover: var(--blue-300);
+
+  /* ---- Borders & dividers ---- */
+  --border-subtle: var(--navy-line);
+  --border-default: #294d72;
+  --divider: var(--navy-line);
+
+  /* ---- Status ---- */
+  --status-success: #3fb985;
+  --status-success-bg: rgba(63, 185, 133, 0.14);
+  --status-warning: #e0a93a;
+  --status-warning-bg: rgba(224, 169, 58, 0.14);
+  --status-danger: #e57464;
+  --status-danger-bg: rgba(229, 116, 100, 0.14);
+  --status-highlight: var(--coral-500);
+
+  /* ---- Focus ring ---- */
+  --ring: 0 0 0 3px rgba(79, 141, 214, 0.42);
+
+  /* ---- Typography ---- */
+  --font-display: "Roboto Slab", Georgia, "Times New Roman", serif;
+  --font-sans: "Roboto", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: "Roboto Mono", "SF Mono", "Menlo", ui-monospace, monospace;
+  --tracking-caps: 0.12em;
+
+  /* ---- Elevation ---- */
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-xs: 0 1px 2px rgba(8, 26, 51, 0.06);
+  --shadow-md: 0 4px 12px rgba(8, 26, 51, 0.1);
+  --shadow-lg: 0 12px 32px rgba(8, 26, 51, 0.14);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-base: 200ms;
 }
 
 body {
-  background-color: var(--bg);
-  color: #f1f5f9;
-  font-family: 'Inter', sans-serif;
+  background-color: var(--surface-page);
+  color: var(--text-body);
+  font-family: var(--font-sans);
 }
 
-/* React Flow overrides */
+/* Mono metadata utility — dates, venues, counts, eyebrows. */
+.font-meta {
+  font-family: var(--font-mono);
+}
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ---- React Flow overrides — hairline navy, no glow chrome ---- */
 .react-flow__renderer {
   background-color: transparent !important;
 }
 
 .react-flow__minimap {
-  background-color: #111827 !important;
-  border: 1px solid #1e2d45 !important;
-  border-radius: 8px !important;
+  background-color: var(--surface-card) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-md) !important;
 }
 
 .react-flow__controls {
-  background-color: #111827 !important;
-  border: 1px solid #1e2d45 !important;
-  border-radius: 8px !important;
+  background-color: var(--surface-card) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-md) !important;
 }
 
 .react-flow__controls-button {
-  background-color: #111827 !important;
-  border-color: #1e2d45 !important;
-  fill: #94a3b8 !important;
+  background-color: var(--surface-card) !important;
+  border-color: var(--border-subtle) !important;
+  fill: var(--text-muted) !important;
 }
 
 .react-flow__controls-button:hover {
-  background-color: #1e2d45 !important;
+  background-color: var(--surface-raised) !important;
+  fill: var(--accent) !important;
 }
 
-/* Custom scrollbar */
+/* ---- Custom scrollbar — cool slate on navy ---- */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0e1a;
+  background: var(--surface-page);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e2d45;
+  background: var(--border-subtle);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #374151;
+  background: var(--border-default);
 }
 
-/* Animations */
+/* ---- Animations — subtle, fast; cool-blue glow, no bounce ---- */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 8px var(--glow-color, #3b82f6); }
-  50% { box-shadow: 0 0 20px var(--glow-color, #3b82f6), 0 0 40px color-mix(in srgb, var(--glow-color, #3b82f6) 30%, transparent); }
+  0%, 100% { box-shadow: 0 0 8px var(--glow-color, #4f8dd6); }
+  50% { box-shadow: 0 0 20px var(--glow-color, #4f8dd6), 0 0 40px color-mix(in srgb, var(--glow-color, #4f8dd6) 30%, transparent); }
 }
 
 @keyframes unlock-burst {
-  0% { transform: scale(1); box-shadow: 0 0 0 0 var(--glow-color, #3b82f6); }
-  50% { transform: scale(1.05); box-shadow: 0 0 30px var(--glow-color, #3b82f6); }
-  100% { transform: scale(1); box-shadow: 0 0 8px var(--glow-color, #3b82f6); }
+  0% { transform: scale(1); box-shadow: 0 0 0 0 var(--glow-color, #4f8dd6); }
+  50% { transform: scale(1.05); box-shadow: 0 0 30px var(--glow-color, #4f8dd6); }
+  100% { transform: scale(1); box-shadow: 0 0 8px var(--glow-color, #4f8dd6); }
 }
 
 .node-unlocked {

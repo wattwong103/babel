@@ -6,16 +6,16 @@ export const transportationSciences: SkillTree = {
   description:
     "An interdisciplinary field integrating urban planning, policy analysis, geography, economics, and human behavior to design transportation systems that move people and goods efficiently, equitably, and sustainably.",
   icon: "train-front",
-  color: "#06b6d4",
+  color: "#2fb6a8",
   sources: [
-    { branchId: "mathematics", label: "Mathematics", color: "#3b82f6" },
-    { branchId: "logic", label: "Logic", color: "#6366f1" },
-    { branchId: "geography", label: "Geography", color: "#f59e0b" },
-    { branchId: "economics", label: "Economics", color: "#eab308" },
-    { branchId: "political-science", label: "Political Science", color: "#d97706" },
-    { branchId: "philosophy", label: "Philosophy", color: "#a855f7" },
-    { branchId: "psychology", label: "Psychology", color: "#f97316" },
-    { branchId: "biology", label: "Biology", color: "#22c55e" },
+    { branchId: "mathematics", label: "Mathematics", color: "#4f8dd6" },
+    { branchId: "logic", label: "Logic", color: "#7283c9" },
+    { branchId: "geography", label: "Geography", color: "#e0a93a" },
+    { branchId: "economics", label: "Economics", color: "#e0a93a" },
+    { branchId: "political-science", label: "Political Science", color: "#c8862e" },
+    { branchId: "philosophy", label: "Philosophy", color: "#8e7cc3" },
+    { branchId: "psychology", label: "Psychology", color: "#e0743f" },
+    { branchId: "biology", label: "Biology", color: "#38b58e" },
   ],
   nodes: [
     // Tier 1 — Foundations

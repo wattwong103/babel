@@ -7,7 +7,7 @@ export const philosophy: BranchTree = {
     "The pursuit of wisdom through reason. Philosophy examines fundamental questions about existence, knowledge, values, and the good life.",
   icon: "lightbulb",
   grandTreeId: "humanities",
-  color: "#a855f7",
+  color: "#8e7cc3",
   nodes: [
     {
       id: "phil-ethics",

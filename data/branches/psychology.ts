@@ -7,7 +7,7 @@ export const psychology: BranchTree = {
     "The science of mind and behavior. Psychology investigates how people think, feel, and act — individually and in groups.",
   icon: "brain",
   grandTreeId: "social-sciences",
-  color: "#f97316",
+  color: "#e0743f",
   nodes: [
     {
       id: "psych-cognitive",

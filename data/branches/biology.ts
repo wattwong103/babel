@@ -7,7 +7,7 @@ export const biology: BranchTree = {
     "The study of life in all its forms — from molecular mechanisms to ecosystems. Biology reveals how living systems grow, adapt, and interact.",
   icon: "leaf",
   grandTreeId: "natural-sciences",
-  color: "#22c55e",
+  color: "#38b58e",
   nodes: [
     {
       id: "bio-foundations",

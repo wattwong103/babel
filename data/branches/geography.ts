@@ -7,7 +7,7 @@ export const geography: BranchTree = {
     "The study of places, spaces, and the relationships between people and their environments. Geography bridges the physical and social sciences.",
   icon: "globe",
   grandTreeId: "social-sciences",
-  color: "#f59e0b",
+  color: "#e0a93a",
   nodes: [
     {
       id: "geo-physical",

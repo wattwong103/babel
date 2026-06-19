@@ -6,14 +6,30 @@ import LucideIcon from "@/components/ui/LucideIcon";
 import ProgressBar from "@/components/ui/ProgressBar";
 import Link from "next/link";
 
+function BrandMark() {
+  return (
+    <Link href="/" className="flex items-center gap-2.5 group">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/favicon.svg"
+        alt=""
+        width={28}
+        height={28}
+        className="rounded-md"
+      />
+      <span className="font-display text-lg font-medium text-babel-text tracking-tight">
+        Babel<span className="text-accent">.</span>
+      </span>
+    </Link>
+  );
+}
+
 function GrandTreeCard({ tree }: { tree: (typeof grandTrees)[0] }) {
   const getProgress = useKnowledgeStore((s) => s.getProgress);
 
   // Aggregate progress across all branch trees in this grand tree
   const branches = branchTrees.filter((b) => b.grandTreeId === tree.id);
-  const skills = skillTrees.filter((s) =>
-    tree.skillTrees?.includes(s.id)
-  );
+  const skills = skillTrees.filter((s) => tree.skillTrees?.includes(s.id));
 
   let totalLearned = 0;
   let totalNodes = 0;
@@ -35,68 +51,55 @@ function GrandTreeCard({ tree }: { tree: (typeof grandTrees)[0] }) {
   return (
     <Link
       href={hasTrees ? `/tree/${tree.id}` : "#"}
-      className={`group block rounded-xl border border-babel-border bg-babel-surface p-6 transition-all duration-300 ${
+      className={`group block rounded-[10px] border border-babel-border bg-babel-surface p-6 transition-all duration-200 ${
         hasTrees
-          ? "hover:border-opacity-60 hover:scale-[1.02] hover:shadow-lg cursor-pointer"
+          ? "hover:-translate-y-0.5 hover:shadow-brand-md cursor-pointer"
           : "opacity-50 cursor-default"
       }`}
-      style={
-        hasTrees
-          ? ({
-              "--hover-border": tree.color,
-            } as React.CSSProperties)
-          : undefined
-      }
       onMouseEnter={(e) => {
         if (hasTrees) {
-          e.currentTarget.style.borderColor = tree.color + "60";
-          e.currentTarget.style.boxShadow = `0 0 24px ${tree.color}15`;
+          e.currentTarget.style.borderColor = tree.color + "80";
         }
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.borderColor = "";
-        e.currentTarget.style.boxShadow = "";
       }}
     >
       <div className="flex items-start gap-4 mb-4">
         <div
-          className="p-3 rounded-xl"
-          style={{ backgroundColor: tree.color + "15" }}
+          className="p-3 rounded-[10px]"
+          style={{ backgroundColor: tree.color + "1f" }}
         >
-          <LucideIcon
-            name={tree.icon}
-            size={28}
-            style={{ color: tree.color }}
-          />
+          <LucideIcon name={tree.icon} size={26} style={{ color: tree.color }} />
         </div>
-        <div className="flex-1">
-          <h2 className="font-heading text-xl font-bold text-babel-text mb-1">
+        <div className="flex-1 min-w-0">
+          <h2 className="font-display text-xl font-medium text-babel-text mb-1 tracking-tight">
             {tree.title}
           </h2>
           {totalNodes > 0 && (
-            <span className="text-xs text-babel-text-secondary">
+            <span className="font-mono text-xs text-babel-text-secondary">
               {totalLearned} / {totalNodes} nodes learned
             </span>
           )}
         </div>
       </div>
 
-      <p className="text-sm text-babel-text-secondary leading-relaxed mb-4">
+      <p className="text-sm text-babel-text-secondary leading-relaxed mb-5">
         {tree.description}
       </p>
 
       {totalNodes > 0 && (
-        <div className="mb-3">
+        <div className="mb-4">
           <ProgressBar percent={percent} color="bg-babel-learned" />
         </div>
       )}
 
-      {/* Branch/Skill previews */}
+      {/* Branch / Skill previews */}
       <div className="flex flex-wrap gap-1.5">
         {branches.map((b) => (
           <span
             key={b.id}
-            className="text-[10px] px-2 py-0.5 rounded-full border border-babel-border text-babel-text-secondary"
+            className="font-mono text-[11px] px-2 py-0.5 rounded border border-babel-border text-babel-text-secondary"
           >
             {b.title}
           </span>
@@ -104,14 +107,14 @@ function GrandTreeCard({ tree }: { tree: (typeof grandTrees)[0] }) {
         {skills.map((s) => (
           <span
             key={s.id}
-            className="text-[10px] px-2 py-0.5 rounded-full border text-babel-text-secondary"
-            style={{ borderColor: s.color + "40", color: s.color }}
+            className="font-mono text-[11px] px-2 py-0.5 rounded border text-babel-text-secondary"
+            style={{ borderColor: s.color + "55", color: s.color }}
           >
             {s.title}
           </span>
         ))}
         {!hasTrees && (
-          <span className="text-[10px] text-babel-text-secondary italic">
+          <span className="font-mono text-[11px] text-babel-text-secondary">
             Coming soon
           </span>
         )}
@@ -126,43 +129,60 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-babel-bg">
-      {/* Hero Section */}
-      <section className="relative flex flex-col items-center justify-center pt-20 pb-16 px-4 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
+      {/* Sticky nav */}
+      <header className="sticky top-0 z-20 border-b border-babel-border bg-babel-bg/[0.92] backdrop-blur-md">
+        <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-3.5">
+          <BrandMark />
+          <span className="font-mono text-xs text-babel-text-secondary hidden sm:inline">
+            Knowledge technology tree
+          </span>
         </div>
+      </header>
 
-        <div className="relative z-10 text-center">
-          <h1 className="font-heading text-7xl sm:text-8xl md:text-9xl font-black text-babel-text tracking-tight mb-4">
-            BABEL
-          </h1>
-          <p className="text-lg sm:text-xl text-babel-text-secondary max-w-md mx-auto font-light">
-            Build your tower of knowledge, one discovery at a time.
-          </p>
-        </div>
+      {/* Hero */}
+      <section className="mx-auto max-w-[930px] px-6 pt-20 pb-14 text-center">
+        <p className="eyebrow mb-5">A tower of knowledge</p>
+        <h1 className="font-display text-6xl sm:text-7xl md:text-8xl font-bold text-babel-text tracking-tight mb-5">
+          BABEL
+        </h1>
+        <p className="mx-auto max-w-xl text-base sm:text-lg text-babel-text-secondary leading-relaxed">
+          Build your tower of knowledge, one discovery at a time — a research
+          map across the formal, natural, social, and applied sciences.
+        </p>
       </section>
 
-      {/* Overall Progress */}
-      <section className="pb-12 px-4">
-        <div className="text-center">
-          <div className="inline-flex items-center gap-4 bg-babel-surface border border-babel-border rounded-full px-6 py-3">
-            <div className="text-sm text-babel-text-secondary">
-              Total Progress
-            </div>
+      {/* Overall progress */}
+      <section className="mx-auto max-w-[930px] px-6 pb-14">
+        <div className="flex items-center justify-center">
+          <div className="inline-flex items-center gap-4 rounded-[10px] border border-babel-border bg-babel-surface px-6 py-3">
+            <span className="eyebrow !text-babel-text-secondary">
+              Total progress
+            </span>
             <div className="w-32">
               <ProgressBar percent={progress.percent} color="bg-babel-learned" />
             </div>
-            <div className="text-sm font-medium text-babel-text">
+            <span className="font-mono text-sm text-babel-text">
               {progress.learned} / {progress.total} nodes
-            </div>
+            </span>
           </div>
         </div>
       </section>
 
-      {/* Grand Tree Cards */}
-      <section className="max-w-5xl mx-auto px-4 pb-20">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Section label */}
+      <section className="mx-auto max-w-[1200px] px-6">
+        <div className="flex items-baseline justify-between border-b border-babel-border pb-3 mb-8">
+          <h2 className="font-display text-lg font-medium text-babel-text tracking-tight">
+            Grand trees
+          </h2>
+          <span className="font-mono text-xs text-babel-text-secondary">
+            {grandTrees.length} domains
+          </span>
+        </div>
+      </section>
+
+      {/* Grand tree cards */}
+      <section className="mx-auto max-w-[1200px] px-6 pb-24">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {grandTrees.map((tree) => (
             <GrandTreeCard key={tree.id} tree={tree} />
           ))}
@@ -170,9 +190,9 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-babel-border py-6 text-center">
-        <p className="text-xs text-babel-text-secondary">
-          Babel — A Knowledge Technology Tree
+      <footer className="border-t border-babel-border py-8 text-center">
+        <p className="font-mono text-xs text-babel-text-secondary">
+          Babel · A knowledge technology tree · W.Wongkaew
         </p>
       </footer>
     </main>
