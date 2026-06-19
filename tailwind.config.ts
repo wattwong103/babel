@@ -8,23 +8,39 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Wongkaew Research — deep-navy academic palette (dark, preferred mode).
         babel: {
-          bg: "#0a0e1a",
-          surface: "#111827",
-          border: "#1e2d45",
-          science: "#3b82f6",
-          "science-light": "#60a5fa",
-          humanities: "#a855f7",
-          "humanities-light": "#c084fc",
-          learned: "#10b981",
-          locked: "#374151",
-          text: "#f1f5f9",
-          "text-secondary": "#94a3b8",
+          bg: "#06182e", // navy canvas
+          surface: "#0e2742", // card / panel
+          raised: "#143257", // raised / hover
+          border: "#1f3f63", // hairline navy
+          science: "#4f8dd6", // brand accent blue
+          "science-light": "#6fa3d6",
+          humanities: "#8e7cc3", // brand violet
+          "humanities-light": "#a99fd6",
+          learned: "#3fb985", // success green
+          locked: "#33506f", // muted navy
+          text: "#eef4fb", // text-strong
+          "text-secondary": "#8fa3bc", // text-muted
         },
+        // Brand semantic accents.
+        brand: "#2563a8",
+        accent: "#4f8dd6",
+        coral: "#e0533d", // highlight: awards only
       },
       fontFamily: {
-        heading: ["Playfair Display", "serif"],
-        body: ["Inter", "sans-serif"],
+        // Roboto Slab (display/headings), Roboto (body/UI), Roboto Mono (metadata).
+        display: ["Roboto Slab", "Georgia", "serif"],
+        heading: ["Roboto Slab", "Georgia", "serif"],
+        body: ["Roboto", "-apple-system", "Segoe UI", "sans-serif"],
+        mono: ["Roboto Mono", "SF Mono", "Menlo", "monospace"],
+      },
+      boxShadow: {
+        "brand-md": "0 4px 12px rgba(8, 26, 51, 0.1)",
+        "brand-lg": "0 12px 32px rgba(8, 26, 51, 0.14)",
+      },
+      letterSpacing: {
+        caps: "0.12em",
       },
     },
   },

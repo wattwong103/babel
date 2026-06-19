@@ -8,10 +8,10 @@ export const fourStepModelProject: SkillTree = {
   description:
     "A hands-on, project-based learning experience where you build a complete travel demand model from scratch. Work through trip generation, trip distribution, mode choice, and trip assignment for a fictional city, producing real deliverables at every stage.",
   icon: "hammer",
-  color: "#8b5cf6",
+  color: "#8e7cc3",
   sources: [
-    { branchId: "mathematics", label: "Mathematics", color: "#3b82f6" },
-    { branchId: "geography", label: "Geography", color: "#f59e0b" },
+    { branchId: "mathematics", label: "Mathematics", color: "#4f8dd6" },
+    { branchId: "geography", label: "Geography", color: "#e0a93a" },
   ],
   nodes: [
     // ── Tier 1 — Project Setup ──────────────────────────────────────────

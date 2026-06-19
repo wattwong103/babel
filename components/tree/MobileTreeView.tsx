@@ -131,9 +131,9 @@ export default function MobileTreeView({
                         style={{
                           color:
                             node.status === "locked"
-                              ? "#374151"
+                              ? "#33506f"
                               : node.status === "learned"
-                              ? "#10b981"
+                              ? "#3fb985"
                               : accentColor,
                         }}
                       />

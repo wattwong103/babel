@@ -9,14 +9,17 @@ interface StatusBadgeProps {
 }
 
 export default function StatusBadge({ status, size = "sm" }: StatusBadgeProps) {
-  const sizeClasses = size === "sm" ? "text-xs px-2 py-0.5" : "text-sm px-3 py-1";
+  const sizeClasses =
+    size === "sm" ? "text-[11px] px-2 py-0.5" : "text-xs px-3 py-1";
   const iconSize = size === "sm" ? 10 : 14;
+  const base = `inline-flex items-center gap-1.5 ${sizeClasses} rounded font-mono uppercase tracking-caps`;
 
   switch (status) {
     case "locked":
       return (
         <span
-          className={`inline-flex items-center gap-1 ${sizeClasses} rounded-full bg-babel-locked/50 text-babel-text-secondary`}
+          className={`${base} text-babel-text-secondary`}
+          style={{ backgroundColor: "rgba(143, 163, 188, 0.12)" }}
         >
           <Lock size={iconSize} />
           Locked
@@ -25,7 +28,8 @@ export default function StatusBadge({ status, size = "sm" }: StatusBadgeProps) {
     case "unlocked":
       return (
         <span
-          className={`inline-flex items-center gap-1 ${sizeClasses} rounded-full bg-blue-500/20 text-blue-400`}
+          className={`${base}`}
+          style={{ color: "#4f8dd6", backgroundColor: "rgba(79, 141, 214, 0.16)" }}
         >
           <Sparkles size={iconSize} />
           Unlocked
@@ -34,7 +38,8 @@ export default function StatusBadge({ status, size = "sm" }: StatusBadgeProps) {
     case "learned":
       return (
         <span
-          className={`inline-flex items-center gap-1 ${sizeClasses} rounded-full bg-emerald-500/20 text-emerald-400`}
+          className={`${base}`}
+          style={{ color: "#3fb985", backgroundColor: "rgba(63, 185, 133, 0.14)" }}
         >
           <Check size={iconSize} />
           Learned

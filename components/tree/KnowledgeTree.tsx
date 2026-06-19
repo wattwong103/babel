@@ -104,11 +104,11 @@ export default function KnowledgeTree({
         style: {
           background: "transparent",
           border: "none",
-          color: "#94a3b8",
+          color: "#8fa3bc",
           fontSize: "12px",
-          fontFamily: "'Playfair Display', serif",
-          fontWeight: 600,
-          letterSpacing: "0.05em",
+          fontFamily: "'Roboto Mono', monospace",
+          fontWeight: 500,
+          letterSpacing: "0.12em",
           textTransform: "uppercase" as const,
           width: "180px",
           textAlign: "center" as const,
@@ -170,14 +170,16 @@ export default function KnowledgeTree({
               <ArrowLeft size={20} />
             </Link>
             <div>
-              <h1 className="font-heading text-lg font-bold text-babel-text">
+              <h1 className="font-display text-lg font-medium text-babel-text tracking-tight">
                 {title}
               </h1>
-              <p className="text-xs text-babel-text-secondary">Knowledge Tree</p>
+              <p className="font-mono text-xs text-babel-text-secondary">
+                Knowledge tree
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-sm text-babel-text-secondary">
+            <span className="font-mono text-sm text-babel-text-secondary">
               {progress.learned} / {progress.total} learned
             </span>
             <div className="w-32">
@@ -232,7 +234,7 @@ export default function KnowledgeTree({
         zoomOnPinch
         proOptions={{ hideAttribution: true }}
       >
-        <Background color="#1e2d45" gap={40} size={1} />
+        <Background color="#1f3f63" gap={40} size={1} />
         <Controls
           showInteractive={false}
           position="bottom-left"

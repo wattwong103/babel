@@ -7,7 +7,7 @@ export const economics: BranchTree = {
     "The study of how societies allocate scarce resources. Economics illuminates decision-making, markets, trade-offs, and the forces shaping prosperity.",
   icon: "trending-up",
   grandTreeId: "social-sciences",
-  color: "#eab308",
+  color: "#e0a93a",
   nodes: [
     {
       id: "econ-micro",

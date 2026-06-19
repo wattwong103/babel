@@ -7,7 +7,7 @@ export const logic: BranchTree = {
     "The discipline of valid reasoning — from propositional logic to systems thinking. Logic provides the framework for clear argumentation and structured analysis.",
   icon: "git-branch",
   grandTreeId: "formal-sciences",
-  color: "#6366f1",
+  color: "#7283c9",
   nodes: [
     {
       id: "logic-propositional",

@@ -20,7 +20,7 @@ function KnowledgeNodeComponent({ data }: NodeProps<KnowledgeNodeData>) {
   const nodes = useKnowledgeStore((s) => s.nodes);
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const accent = accentColor || "#3b82f6";
+  const accent = accentColor || "#4f8dd6";
 
   const handleClick = useCallback(() => {
     if (node.status !== "locked") {
@@ -80,7 +80,7 @@ function KnowledgeNodeComponent({ data }: NodeProps<KnowledgeNodeData>) {
             "--glow-color": accent,
             borderColor:
               node.status === "learned"
-                ? "#10b981"
+                ? "#3fb985"
                 : node.status === "unlocked"
                 ? accent
                 : undefined,
@@ -125,9 +125,9 @@ function KnowledgeNodeComponent({ data }: NodeProps<KnowledgeNodeData>) {
             style={{
               color:
                 node.status === "locked"
-                  ? "#374151"
+                  ? "#33506f"
                   : node.status === "learned"
-                  ? "#10b981"
+                  ? "#3fb985"
                   : accent,
             }}
           />
@@ -166,7 +166,7 @@ function KnowledgeNodeComponent({ data }: NodeProps<KnowledgeNodeData>) {
                     className="h-full rounded-full transition-all duration-500"
                     style={{
                       width: `${(done / total) * 100}%`,
-                      backgroundColor: done === total ? "#10b981" : accent,
+                      backgroundColor: done === total ? "#3fb985" : accent,
                     }}
                   />
                 </div>

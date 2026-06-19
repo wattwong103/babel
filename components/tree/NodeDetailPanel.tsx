@@ -267,18 +267,21 @@ export default function NodeDetailPanel({
             {node.tips && node.tips.length > 0 && (
               <div
                 className="mb-6 p-4 rounded-lg border"
-                style={{ borderColor: "#facc1530", backgroundColor: "#facc1508" }}
+                style={{ borderColor: "#e0a93a30", backgroundColor: "#e0a93a08" }}
               >
                 <div className="flex items-center gap-2 mb-3">
-                  <Lightbulb size={14} className="text-yellow-400" />
-                  <span className="text-xs font-semibold uppercase tracking-wider text-yellow-400">
-                    Useful Tips
+                  <Lightbulb size={14} style={{ color: "#e0a93a" }} />
+                  <span
+                    className="font-mono text-xs font-medium uppercase tracking-caps"
+                    style={{ color: "#e0a93a" }}
+                  >
+                    Useful tips
                   </span>
                 </div>
                 <ul className="space-y-2">
                   {node.tips.map((tip, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-babel-text-secondary leading-relaxed">
-                      <span className="text-yellow-400 mt-1 flex-shrink-0">•</span>
+                      <span className="mt-1 flex-shrink-0" style={{ color: "#e0a93a" }}>•</span>
                       <span>{tip}</span>
                     </li>
                   ))}
@@ -309,10 +312,10 @@ export default function NodeDetailPanel({
                       className="text-xs font-medium px-2 py-1 rounded-full"
                       style={{
                         backgroundColor: allDeliverablesComplete
-                          ? "#10b98115"
+                          ? "#3fb98515"
                           : accentColor + "15",
                         color: allDeliverablesComplete
-                          ? "#10b981"
+                          ? "#3fb985"
                           : accentColor,
                       }}
                     >
@@ -411,7 +414,7 @@ export default function NodeDetailPanel({
                     onClick={() => markAsLearned(node.id)}
                     className="w-full py-3 px-4 rounded-lg font-heading font-semibold text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                     style={{
-                      background: `linear-gradient(135deg, ${accentColor}, #10b981)`,
+                      background: `linear-gradient(135deg, ${accentColor}, #3fb985)`,
                       boxShadow: `0 0 20px ${accentColor}40`,
                     }}
                   >

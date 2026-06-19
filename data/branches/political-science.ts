@@ -7,7 +7,7 @@ export const politicalScience: BranchTree = {
     "The study of power, governance, and public affairs. Political science examines how societies make collective decisions and organize authority.",
   icon: "landmark",
   grandTreeId: "social-sciences",
-  color: "#d97706",
+  color: "#c8862e",
   nodes: [
     {
       id: "polsci-government",

@@ -18,7 +18,7 @@ function EdgeComponent({
 }: EdgeProps) {
   const isLearned = data?.sourceLearned && data?.targetLearned;
   const isActive = data?.sourceLearned && !data?.targetLearned;
-  const accent = data?.accent || "#3b82f6";
+  const accent = data?.accent || "#4f8dd6";
 
   // Compute a custom bezier that avoids cutting through intermediate nodes
   const dx = targetX - sourceX;
@@ -62,7 +62,7 @@ function EdgeComponent({
         d={edgePath}
         fill="none"
         stroke={
-          isLearned ? "#10b981" : isActive ? accent : "#1e2d45"
+          isLearned ? "#3fb985" : isActive ? accent : "#1f3f63"
         }
         strokeWidth={isLearned ? 2 : isActive ? 2 : 1}
         strokeOpacity={isLearned ? 0.8 : isActive ? 0.7 : 0.3}

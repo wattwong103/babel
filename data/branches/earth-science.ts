@@ -6,7 +6,7 @@ export const earthScience: BranchTree = {
   description: "The study of Earth as a system — its atmosphere, oceans, lithosphere, and the processes that shape our planet.",
   icon: "globe-2",
   grandTreeId: "natural-sciences",
-  color: "#0ea5e9",
+  color: "#6fa3d6",
   nodes: [
     {
       id: "es-atmosphere",

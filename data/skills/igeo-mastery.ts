@@ -12,14 +12,14 @@ export const igeoMastery: SkillTree = {
   description:
     "A comprehensive path from geographic literacy to International Geography Olympiad medal-level mastery. Covers all 12 iGeo categories with hands-on fieldwork, GIS projects, and mock exam practice — based on the UK A-level curriculum and official iGeo syllabus.",
   icon: "trophy",
-  color: "#14b8a6",
+  color: "#2fb6a8",
   sources: [
-    { branchId: "geography", label: "Geography", color: "#f59e0b" },
-    { branchId: "earth-science", label: "Earth Science", color: "#0ea5e9" },
-    { branchId: "mathematics", label: "Mathematics", color: "#3b82f6" },
-    { branchId: "biology", label: "Biology", color: "#22c55e" },
-    { branchId: "economics", label: "Economics", color: "#eab308" },
-    { branchId: "political-science", label: "Political Science", color: "#d97706" },
+    { branchId: "geography", label: "Geography", color: "#e0a93a" },
+    { branchId: "earth-science", label: "Earth Science", color: "#6fa3d6" },
+    { branchId: "mathematics", label: "Mathematics", color: "#4f8dd6" },
+    { branchId: "biology", label: "Biology", color: "#38b58e" },
+    { branchId: "economics", label: "Economics", color: "#e0a93a" },
+    { branchId: "political-science", label: "Political Science", color: "#c8862e" },
   ],
   nodes: [
     ...igeoTier1Nodes,

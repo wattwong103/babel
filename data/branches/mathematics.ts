@@ -7,7 +7,7 @@ export const mathematics: BranchTree = {
     "The language of patterns and structure — from arithmetic to calculus, mathematics provides the tools to quantify, model, and reason about the world.",
   icon: "hash",
   grandTreeId: "formal-sciences",
-  color: "#3b82f6",
+  color: "#4f8dd6",
   nodes: [
     {
       id: "math-arithmetic",
